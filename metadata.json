@@ -1,0 +1,5 @@
+{
+  "name": "AI PDF Lens",
+  "description": "An AI-powered tool that answers questions from photos using an uploaded PDF as the sole knowledge source.",
+  "requestFramePermissions": ["camera"]
+}
