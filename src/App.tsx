@@ -19,10 +19,9 @@ import {
 import { motion, AnimatePresence } from 'framer-motion';
 import { cn } from './lib/utils';
 import * as pdfjsLib from 'pdfjs-dist';
-import Tesseract from 'tesseract.js';
 
 // PDF.js worker setup
-pdfjsLib.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjsLib.version}/pdf.worker.min.js`;
+pdfjsLib.GlobalWorkerOptions.workerSrc = `https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.4.120/pdf.worker.min.js`;
 
 // Types
 interface AdminConfig {
@@ -207,7 +206,10 @@ const App: React.FC = () => {
     setLoading(true);
     setStatus("Performing OCR...");
     try {
-      const { data: { text } } = await Tesseract.recognize(image, 'eng');
+      // @ts-ignore
+      const worker = await window.Tesseract.createWorker('eng');
+      const { data: { text } } = await worker.recognize(image);
+      await worker.terminate();
       setOcrResult(text.trim());
       setIsEditingOcr(true);
     } catch (error) {
